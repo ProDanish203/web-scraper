@@ -36,7 +36,8 @@ export const SearchBar = () => {
       setLoading(true);
 
       const product = await scrapeAndStore(search);
-      console.log(product)
+      
+      setSearch("");
     }catch(error){  
       console.log(error)
     }finally{
@@ -45,7 +46,7 @@ export const SearchBar = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit} className='mt-3 flex items-center gap-2 mt-5'>
+    <form onSubmit={handleSubmit} className='flex items-center gap-2 mt-5'>
       <input type="url" 
       placeholder='Enter Link of the product'
       className=' outline-none w-full bg-transparent bg-gray-200 p-2 rounded-md shadow-sm max-w-[400px] border-2 border-primary'

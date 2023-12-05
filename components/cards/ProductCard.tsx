@@ -8,10 +8,10 @@ interface Props{
 }
 
 export const ProductCard = ({data}: Props) => {
-
+  
   return (
     <Link href={`/products/${data.id}`} className='bg-neutral-100 p-2 shadow-md rounded-md'>
-      <div className='rounded-md bg-neutral-200 flex items-center justify-center h-[250px]'>
+      <div className='rounded-md bg-neutral-200 overflow-hidden flex items-center justify-center h-[250px]'>
         <Image src={data.image} alt={data.title} width={300} height={300}
         className='object-cover'
         />

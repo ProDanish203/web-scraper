@@ -66,7 +66,7 @@ export const getProduct = async (id:string) => {
 export const getAllProducts = async () => {
     try{
         connectDb()
-        const products = await Product.find().select("_id title url currency curretnPrice image category")
+        const products = await Product.find().select("_id title url currency currentPrice image category")
         if(!products)
             return {success: false, message: "Failed to fetch products"}
         
