@@ -82,7 +82,7 @@ export async function generateEmailBody(
 
 export const sendEmail = async (emailContent: EmailContent, sendTo: string[]) => {
 
-    let transporter = nodemailer.createTransport({
+    let transporter = await nodemailer.createTransport({
       pool: true,
       service: "gmail",
       auth: {
@@ -98,13 +98,13 @@ export const sendEmail = async (emailContent: EmailContent, sendTo: string[]) =>
       subject: emailContent.subject
     }
 
-    transporter.sendMail(mailOptions, (error:any, info:any) => {
+    await transporter.sendMail(mailOptions, (error:any, info:any) => {
       if(error){
         console.log("Failed to send email: ", error);
         return({success: false, message: "Failed to send email"});
       }
       
-      console.log("Email Sent: " + info.response)
+      // console.log("Email Sent: " + info.response)
       return({ success: true, message: "Email sent", info, 
           preview: nodemailer.getTestMessageUrl(info)
       })
