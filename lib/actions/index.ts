@@ -117,8 +117,8 @@ export const addUserEmail = async (id:string, email:string) => {
 
             const emailContent = await generateEmailBody(product, "WELCOME");
             //@ts-ignore
-            const {success} = await sendEmail(emailContent, [email]);
-            console.log(success);
+            await sendEmail(emailContent, [email]);
+            
         }
         
         return {success: true, message: "User email added succesfully"}

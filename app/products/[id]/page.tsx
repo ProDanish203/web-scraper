@@ -31,7 +31,7 @@ const Product = async ({params}: {params: {id: string}}) => {
                 </div>
                 <div className="flex items-center gap-2 justify-between">
                     <Link href={product.url} target="_blank" className="text-neutral-600 text-sm underline">Visit Product</Link>
-                    {!product.outOfStock && (
+                    {product.outOfStock && (
                         <p className="bg-red-600 text-white p-2 rounded-md">Out Of Stock</p>
 
                     )}
