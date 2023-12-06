@@ -4,6 +4,8 @@ import { connectDb } from "../config/db";
 import Product from "../models/Product";
 import { scrapeAmazonProduct } from "../scraper";
 import { getAveragePrice, getHighestPrice, getLowestPrice } from "../utils";
+import { User } from "@/utils/types";
+import { generateEmailBody, sendEmail } from "../nodemailer";
 
 
 export const scrapeAndStore = async (productUrl:string) => {
@@ -42,6 +44,7 @@ export const scrapeAndStore = async (productUrl:string) => {
         )
 
         revalidatePath(`/products/${newProduct._id}`);
+        revalidatePath('/');
 
         return {newProduct, success: true, message: "Product scraped succesfully"}
     }catch(error:any){
@@ -76,5 +79,52 @@ export const getAllProducts = async () => {
     }
 }
 
+export const getRelatedProducts = async (id:string) => {
+    try{
+        connectDb()
+        const product = await Product.findById(id);
+        if(!product)
+            return {success: false, message: "Failed to fetch product"}
+
+        
+        const relatedProducts = await Product.find({
+            _id: { $ne: id}
+        })
+        .select("_id title url currency currentPrice image category")
+        .limit(4);
+
+        return {relatedProducts, success: true, message: "Products fetched succesfully"}
+    }catch(error:any){
+        throw new Error(`Failed to fetch products: ${error.message}`)
+    }
+}
+
+
+
+export const addUserEmail = async (id:string, email:string) => {
+    try{
+        connectDb()
+        const product = await Product.findById(id);
+        if(!product)
+            return {success: false, message: "Failed to fetch product"}
+
+        const userExists = product.users.some((user: User) => user.email === email);
+
+        if(!userExists){
+            product.users.push({email});
+
+            await product.save();
+
+            const emailContent = await generateEmailBody(product, "WELCOME");
+            //@ts-ignore
+            const {success} = await sendEmail(emailContent, [email]);
+            console.log(success);
+        }
+        
+        return {success: true, message: "User email added succesfully"}
+    }catch(error:any){
+        throw new Error(`Failed to send email: ${error.message}`)
+    }
+}
 
 

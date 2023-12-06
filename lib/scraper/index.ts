@@ -65,9 +65,10 @@ export const scrapeAmazonProduct = async (url:string) => {
             category: "Category",
             reviewsCount: 100,
             stars: 4,
+            outOfStock,
             lowestPrice: Number(currentPrice) || Number(originalPrice),
             highestPrice: Number(originalPrice) || Number(currentPrice),
-            avergaePrice: Number(currentPrice) || Number(originalPrice),
+            averagePrice: Number(currentPrice) || Number(originalPrice),
         }
 
         // console.log(data);

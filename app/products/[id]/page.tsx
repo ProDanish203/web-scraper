@@ -1,6 +1,8 @@
+import { Modal, RelatedProducts } from '@/components/shared';
 import { getProduct } from '@/lib/actions';
 import { formatNumber } from '@/lib/utils';
 import Image from 'next/image';
+import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import React from 'react'
 
@@ -27,6 +29,13 @@ const Product = async ({params}: {params: {id: string}}) => {
                     <p className='text-neutral-600 lg:text-xl text-lg line-through'>{product.currency}{formatNumber(product.originalPrice)}</p>
                 </div>
                 </div>
+                <div className="flex items-center gap-2 justify-between">
+                    <Link href={product.url} target="_blank" className="text-neutral-600 text-sm underline">Visit Product</Link>
+                    {!product.outOfStock && (
+                        <p className="bg-red-600 text-white p-2 rounded-md">Out Of Stock</p>
+
+                    )}
+                </div>
 
                 <div className='my-5 grid grid-cols-2 gap-4'>
                     <div className='bg-neutral-200 p-2 rounded-md'>
@@ -51,17 +60,21 @@ const Product = async ({params}: {params: {id: string}}) => {
                 </div>
 
                 <div>
-                    <button className='bg-primary text-bg rounded-full w-full py-2 text-xl cursor-pointer'>Track</button>
+                    <Modal productId={id}/>
                 </div>
 
                 <div className='my-5'>
                     <p className='text-lg font-semibold'>Product Description</p>
-                    <p className='text-neutral-600'>{product.description}</p>
+                    <p className='text-neutral-600'>{product.description.split('\n')}</p>
                 </div>
             </div>
 
         
 
+        </div>
+
+        <div className='my-5'>
+            <RelatedProducts id={id}/>
         </div>
 
 
